@@ -20,7 +20,6 @@
                 <tr>
                   <th width="15%"> Name </th>
                   <th width="40%"> Description </th>
-                  <th width="15%"> Employee Count </th>
                   <th width="15%"> Edit </th>
                   <th width="15%"> Delete </th>
                 </tr>
@@ -30,13 +29,13 @@
                 <tr>
                   <td> {{ genero.name }} </td>
                   <td> {{ genero.description }} </td>
-                  <td>
+                  <!-- <td>
                     {% if genero.employees %}
                       {{ genero.employees.count() }}
                     {% else %}
                       0
                     {% endif %}
-                  </td>
+                  </td> -->
                   <td>
                     <a href="{{ url_for('admin.edit_genero', id=genero.id) }}">
                       <i class="fa fa-pencil"></i> Edit 
