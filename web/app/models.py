@@ -67,7 +67,7 @@ class Genero(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(40), unique=True)
-    descripcion = db.Column(db.String(200))
+    description = db.Column(db.String(200))
     vestuarios = db.relationship('Vestuario', backref='genero', lazy='dynamic')
     
 
