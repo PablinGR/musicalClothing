@@ -4,7 +4,7 @@ from flask import abort, flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
 
 from . import admin
-from forms import GeneroForm
+from forms import Generoform
 from .. import db
 from ..models import Genero
 
@@ -17,7 +17,7 @@ def check_admin():
 
 # Genero Views
 
-@admin.route('/genero', methods=['GET', 'POST'])
+@admin.route('/generos', methods=['GET', 'POST'])
 @login_required
 def list_generos():
     """
@@ -40,7 +40,7 @@ def add_genero():
 
     add_genero = True
 
-    form = GeneroForm()
+    form = Generoform()
     if form.validate_on_submit():
         genero = Genero(name=form.name.data,
                                 description=form.description.data)
@@ -54,7 +54,7 @@ def add_genero():
             flash('Error: genero name already exists.')
 
         # redirect to generos page
-        return redirect(url_for('admin.list_departments'))
+        return redirect(url_for('admin.list_generos'))
 
     # load genero template
     return render_template('admin/generos/genero.html', action="Add",
@@ -80,12 +80,12 @@ def edit_genero(id):
         flash('You have successfully edited the genero.')
 
         # redirect to the generos page
-        return redirect(url_for('admin.list_departments'))
+        return redirect(url_for('admin.list_generos'))
 
     form.description.data = genero.description
     form.name.data = genero.name
     return render_template('admin/generos/genero.html', action="Edit",
-                           add_genero=add_department, form=form,
+                           add_genero=add_genero, form=form,
                            genero=genero, title="Edit Genero")
 
 @admin.route('/generos/delete/<int:id>', methods=['GET', 'POST'])

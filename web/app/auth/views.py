@@ -50,7 +50,7 @@ def login():
             # log usuario in
             login_user(usuario)
 
-            # redirect to the appropriate dashboard page
+            # redirect to the dashboard page after login
             if usuario.is_admin:
                 return redirect(url_for('home.admin_dashboard'))
             else:

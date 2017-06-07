@@ -1,7 +1,7 @@
 # app/home/views.py
 
-from flask import render_template, abort
-from flask_login import login_required, current_user
+from flask import abort, render_template
+from flask_login import current_user, login_required
 
 from . import home
 
@@ -10,7 +10,7 @@ def homepage():
     """
     Render the homepage template on the / route
     """
-    return render_template('home/index.html', title="Bienvenido")
+    return render_template('home/index.html', title="Welcome")
 
 @home.route('/dashboard')
 @login_required
@@ -21,7 +21,6 @@ def dashboard():
     return render_template('home/dashboard.html', title="Dashboard")
 
 
-# add admin dashboard view
 @home.route('/admin/dashboard')
 @login_required
 def admin_dashboard():

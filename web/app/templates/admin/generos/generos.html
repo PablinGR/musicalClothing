@@ -20,13 +20,13 @@
                 <tr>
                   <th width="15%"> Name </th>
                   <th width="40%"> Description </th>
-                  <th width="15%"> Genero Count </th>
+                  <th width="15%"> Employee Count </th>
                   <th width="15%"> Edit </th>
                   <th width="15%"> Delete </th>
                 </tr>
               </thead>
               <tbody>
-              {% for department in generos %}
+              {% for genero in generos %}
                 <tr>
                   <td> {{ genero.name }} </td>
                   <td> {{ genero.description }} </td>
@@ -43,7 +43,7 @@
                     </a>
                   </td>
                   <td>
-                    <a href="{{ url_for('admin.genero_department', id=genero.id) }}">
+                    <a href="{{ url_for('admin.delete_genero', id=genero.id) }}">
                       <i class="fa fa-trash"></i> Delete 
                     </a>
                   </td>
@@ -60,7 +60,7 @@
         {% endif %}
           <a href="{{ url_for('admin.add_genero') }}" class="btn btn-default btn-lg">
             <i class="fa fa-plus"></i>
-            Add Department
+            Add Genero
           </a>
         </div>
       </div>
