@@ -232,13 +232,12 @@ def search_vestuario(id):
 # usuario edit view 
 @admin.route('/admin/usuario/editUser', methods=['GET', 'POST'])
 @login_required  
-def editUser(id): 
+def editUser(username): 
 
      check_admin()
-     usuario = Usuario.query.get_or_404(id)
+     usuario = Usuario.query.get_or_404(username)
      
 	form.email.data = usuario.email
-	form.username.data = usuario.username
 	form.first_name.data = usuario.first_name
 	form.last_name.data = usuario.last_name
 	form.password_hash.data = usuario.password_hash
