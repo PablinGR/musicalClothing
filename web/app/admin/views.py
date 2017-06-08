@@ -232,29 +232,26 @@ def search_vestuario(id):
 # usuario edit view 
 @admin.route('/admin/usuario/editUser', methods=['GET', 'POST'])
 @login_required  
-def editUser(): 
-    """ 
-    Handle requests to the /edit route 
-    Edit an usuario to the database through the registration form 
-    """ 
-    form = RegistrationForm() 
-    if form.validate_on_submit(): 
-        usuario = Usuario(email=form.email.data, 
-                            username=form.username.data, 
-                            first_name=form.first_name.data, 
-                            last_name=form.last_name.data, 
-                            password=form.password.data) 
+def editUser(id): 
+
+     check_admin()
+     usuario = Usuario.query.get_or_404(id)
+     
+	form.email.data = usuario.email
+	form.username.data = usuario.username
+	form.first_name.data = usuario.first_name
+	form.last_name.data = usuario.last_name
+	form.password_hash.data = usuario.password_hash
+	form.is_admin.data = usuario.is_admin
+
  
         # edit usuario to the database 
         db.session.merge(usuario)  
         db.session.commit() 
-        flash('You have successfully registered! You may now login.') 
- 
-        # redirect to the login page 
-        return redirect(url_for('auth.login')) 
+
  
     # load registration template 
-    return render_template('auth/register.html', form=form, title='Register') 
+    return render_template('/admin/usuarios/usuario.html', form=form, title='Usuarios') 
  
 
 
