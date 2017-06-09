@@ -234,23 +234,23 @@ def search_vestuario(id):
 @login_required  
 def editUser(username): 
 
-     check_admin()
-     usuario = Usuario.query.get_or_404(username)
-     
+	check_admin()
+	usuario = Usuario.query.get_or_404(username)
+	 
 	form.email.data = usuario.email
 	form.first_name.data = usuario.first_name
 	form.last_name.data = usuario.last_name
 	form.password_hash.data = usuario.password_hash
 	form.is_admin.data = usuario.is_admin
 
- 
-        # edit usuario to the database 
-        db.session.merge(usuario)  
-        db.session.commit() 
 
- 
-    # load registration template 
-    return render_template('/admin/usuarios/usuario.html', form=form, title='Usuarios') 
+	# edit usuario to the database 
+	db.session.merge(usuario)  
+	db.session.commit() 
+
+
+	# load registration template 
+	return render_template('/admin/usuarios/usuario.html', form=form, title='Usuarios') 
  
 
 
