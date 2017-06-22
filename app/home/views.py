@@ -1,5 +1,5 @@
 # app/home/views.py
-
+#comentario de prueba
 from flask import abort, render_template
 from flask_login import current_user, login_required
 
