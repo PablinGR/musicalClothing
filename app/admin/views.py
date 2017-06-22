@@ -190,7 +190,7 @@ def delete_outfit(id):
 
 @admin.route('/outfit/search/<string:genre>')
 @login_required
-def list_outfits(genre):
+def search_outfits(genre):
     check_admin()
     
     outfits = Outfit.query.filter_by(genre=genre).all()
