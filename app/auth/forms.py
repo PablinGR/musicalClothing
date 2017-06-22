@@ -1,7 +1,7 @@
 # app/auth/forms.py
 
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, SubmitField, ValidationError
+from wtforms import PasswordField, StringField, SubmitField, ValidationError, BooleanField
 from wtforms.validators import DataRequired, Email, EqualTo
 
 from ..models import User
@@ -19,6 +19,7 @@ class RegistrationForm(FlaskForm):
                                         EqualTo('confirm_password')
                                         ])
     confirm_password = PasswordField('Confirm Password')
+    is_admin= BooleanField('Admin')
     submit = SubmitField('Register')
 
     def validate_email(self, field):

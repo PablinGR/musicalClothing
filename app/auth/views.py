@@ -15,6 +15,7 @@ def register():
     Add an user to the database through the registration form
     """
     form = RegistrationForm()
+    form.is_admin.render_kw = {'disabled': 'disabled'}
     if form.validate_on_submit():
         user = User(email=form.email.data,
                             username=form.username.data,

@@ -15,7 +15,6 @@ class Genreform(FlaskForm):
     submit = SubmitField('Submit')
 
 
-#sin probar aun
 class Outfitform(FlaskForm):
     sex = SelectField(u'Sex', choices=[('M', 'Male'), ('F', 'Female')])
     photo = StringField('Photo', validators=[DataRequired()])
