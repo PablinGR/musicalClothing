@@ -3,9 +3,7 @@
 from flask import abort, render_template
 from flask_login import current_user, login_required
 
-
 from . import home
-
 
 @home.route('/')
 def homepage():
@@ -21,7 +19,6 @@ def dashboard():
     Render the dashboard template on the /dashboard route
     """
     return render_template('home/dashboard.html', title="Dashboard")
-
 
 
 @home.route('/admin/dashboard')
