@@ -7,6 +7,8 @@ from . import admin
 from forms import Genreform, Outfitform
 from .. import db
 from ..models import Genre, User, Outfit
+from ..auth.forms import RegistrationForm
+
 
 def check_admin():
     """
@@ -245,7 +247,7 @@ def add_user():
                            add_user=add_user, form=form,
                            title="Add User")
 
-@admin.route('/users/edit/<int:id>', methods=['GET', 'POST'])
+@admin.route('/users/edit/<int:id>', methods=['GET', 'POST']) #/register
 @login_required
 def edit_user(id):
     """
@@ -256,21 +258,29 @@ def edit_user(id):
     add_user = False
 
     user = User.query.get_or_404(id)
-    form = Userform(obj=user)
+    form = RegistrationForm()
     if form.validate_on_submit():
-        user.name = form.name.data
-        user.description = form.description.data
+        user.email = form.email.data
+        user.username = form.username.data
+	user.first_name = form.first_name.data
+	user.last_name = form.last_name.data
+	user.password_hash = form.password_hash.data
+	user.is_admin = form.is_admin.data
         db.session.commit()
-        flash('You have successfully edited the user.')
+        flash('Se ha editado correctamente el usuario.')
 
-        # redirect to the users page
+        # redireccionando a la pagina de usuario 
         return redirect(url_for('admin.list_users'))
 
-    form.description.data = user.description
-    form.name.data = user.name
-    return render_template('admin/user/user.html', action="Edit",
+    form.email.data = user.email
+    form.username.data = user.username
+    form.first_name.data = user.first_name
+    form.last_name.data = user.last_name
+    form.is_admin.data = user.is_admin
+    return render_template('auth/register.html', action="Edit",
                            add_user=add_user, form=form,
                            user=user, title="Edit User")
+
 
 @admin.route('/users/delete/<int:id>', methods=['GET', 'POST'])
 @login_required
