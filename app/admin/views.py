@@ -205,7 +205,7 @@ def delete_outfit(id):
 @login_required
 def list_users():
     """
-    List all users
+    Listando todos los usuarios
     """
     check_admin()
 
@@ -218,7 +218,7 @@ def list_users():
 @login_required
 def add_user():
     """
-    Add a user to the database
+    Anadiendo usuario a la base de datos
     """
     check_admin()
 
@@ -229,18 +229,18 @@ def add_user():
         user = User(name=form.name.data,
                                 description=form.description.data)
         try:
-            # add user to the database
+            # Anade usuario a la base de datos
             db.session.add(user)
             db.session.commit()
-            flash('You have successfully added a new user.')
+            flash('Se ha agregado el usuario exitosamente.')
         except:
-            # in case user name already exists
-            flash('Error: user name already exists.')
+            # En caso de que el nombre de usuario exista
+            flash('Error: el nombre de usuario ya existe.')
 
-        # redirect to users page
+        # Redireccionando a la pagina de usuarios
         return redirect(url_for('admin.list_users'))
 
-    # load user template
+    # Cargando el template de usuario
     return render_template('admin/user/user.html', action="Add",
                            add_user=add_user, form=form,
                            title="Add User")
@@ -258,10 +258,14 @@ def edit_user(id):
     user = User.query.get_or_404(id)
     form = Userform(obj=user)
     if form.validate_on_submit():
-        user.name = form.name.data
-        user.description = form.description.data
+        user.email = form.email.data
+        user.username = form.username.data
+	user.first_name = form.first_name.data
+	user.last_name = form.last_name.data
+	user.password_hash = form.password_hash.data
+	user.is_admin = form.is_admin.data
         db.session.commit()
-        flash('You have successfully edited the user.')
+        flash('Se ha editado correctamente el usuario.')
 
         # redirect to the users page
         return redirect(url_for('admin.list_users'))
