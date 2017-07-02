@@ -36,12 +36,12 @@
                   <td> {{ user.first_name}} </td>
 		  <td> {{ user.is_admin }} </td>
                   <td>
-                    <a href="{{ url_for('admin.edit_genre', id=user.id) }}">
+                    <a href="{{ url_for('admin.edit_user', id=user.id) }}">
                       <i class="fa fa-pencil"></i> Edit 
                     </a>
                   </td>
                   <td>
-                    <a href="{{ url_for('admin.delete_genre', id=user.id) }}">
+                    <a href="{{ url_for('admin.delete_user', id=user.id) }}">
                       <i class="fa fa-trash"></i> Delete 
                     </a>
                   </td>

@@ -157,7 +157,6 @@ def edit_outfit(id):
         outfit.photo = form.photo.data
         outfit.description = form.description.data
         outfit.is_public=form.is_public.data
-        db.session.add(outfit)
         db.session.commit()
         flash('You have successfully edited the outfit')
 
@@ -230,22 +229,21 @@ def edit_user(id):
     if form.validate_on_submit():
         user.email = form.email.data
         user.username = form.username.data
-	user.first_name = form.first_name.data
-	user.last_name = form.last_name.data
-	user.password_hash = form.password_hash.data
-	user.is_admin = form.is_admin.data
-	db.session.add(user)
+        user.first_name = form.first_name.data
+        user.last_name = form.last_name.data
+        user.password_hash = form.password.data
+        user.is_admin = form.is_admin.data
         db.session.commit()
         flash('Se ha editado correctamente el usuario.')
 
         # redirect to the users page
         return redirect(url_for('admin.list_users'))
 
-    form.email.data = user.description
+    form.email.data = user.email
     form.username.data=user.username
     form.first_name.data = user.first_name
     form.last_name.data = user.last_name
-    form.password_hash.data = user.password_hash
+    form.password.data = user.password_hash
     form.is_admin.data = user.is_admin
     return render_template('auth/register.html', action="Edit",
                            add_user=add_user, form=form,
