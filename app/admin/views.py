@@ -249,7 +249,7 @@ def add_user():
 @login_required
 def edit_user(id):
     """
-    Edit a user
+    Editar usuario
     """
     check_admin()
 

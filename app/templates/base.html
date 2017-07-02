@@ -28,7 +28,7 @@
                       <li><a href="{{ url_for('home.admin_dashboard') }}">Dashboard</a></li>
                       <li><a href="{{ url_for('admin.list_genres') }}">Generos</a></li>
                       <li><a href="{{ url_for('admin.list_outfits') }}">Vestuarios</a></li>
-                      <li><a href="#">Usuarios</a></li>
+                      <li><a href="{{ url_for('admin.list_users') }}">Usuarios</a></li>
                     {% else %}
                       <li><a href="{{ url_for('home.dashboard') }}">Dashboard</a></li>
                     {% endif %}
