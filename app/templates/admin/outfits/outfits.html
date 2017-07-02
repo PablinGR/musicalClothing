@@ -2,7 +2,7 @@
 
 {% import "bootstrap/utils.html" as utils %}
 {% extends "base.html" %}
-{% block title %}Outfits{% endblock %}
+{% block title %}{{title}}{% endblock %}
 {% block body %}
 <div class="content-section">
   <div class="outer">
@@ -11,7 +11,7 @@
         <br/>
         {{ utils.flashed_messages() }}
         <br/>
-        <h1 style="text-align:center;">Outfits</h1>
+        <h1 style="text-align:center;">{{title}}</h1>
         {% if outfits %}
           <hr class="intro-divider">
           <div class="center">
