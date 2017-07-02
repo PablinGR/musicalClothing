@@ -12,10 +12,10 @@ from ..models import User
 def register():
     """
     Handle requests to the /register route
-    A;adiendo un usario a la base de datos atraves del registro 
+    Añadiendo un usario a la base de datos atraves del registro 
     """
     form = RegistrationForm()
-    form.is_admin.render_kw = {'disabled': 'disabled'}
+    form.is_admin.render_kw = {'display': 'none'}
     if form.validate_on_submit():
         user = User(email=form.email.data,
                             username=form.username.data,
