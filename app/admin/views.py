@@ -7,7 +7,7 @@ from . import admin
 from forms import Genreform, Outfitform
 from .. import db
 from ..models import Genre, User, Outfit
-
+from ..auth.forms import RegistrationForm
 def check_admin():
     """
     Prevent non-admins from accessing the page
@@ -256,7 +256,7 @@ def edit_user(id):
     add_user = False
 
     user = User.query.get_or_404(id)
-    form = Userform(obj=user)
+    form = RegistrationForm()
     if form.validate_on_submit():
         user.email = form.email.data
         user.username = form.username.data
@@ -267,14 +267,18 @@ def edit_user(id):
         db.session.commit()
         flash('Se ha editado correctamente el usuario.')
 
-        # redirect to the users page
+        # redireccionando a la pagina de usuario 
         return redirect(url_for('admin.list_users'))
 
-    form.description.data = user.description
-    form.name.data = user.name
-    return render_template('admin/user/user.html', action="Edit",
+    form.email.data = user.email
+    form.username.data = user.username
+    form.first_name.data = user.first_name
+    form.last_name.data = user.last_name
+    form.is_admin.data = user.is_admin
+    return render_template('auth/register.html', action="Edit",
                            add_user=add_user, form=form,
                            user=user, title="Edit User")
+
 
 @admin.route('/users/delete/<int:id>', methods=['GET', 'POST'])
 @login_required
