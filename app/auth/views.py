@@ -1,3 +1,4 @@
+#coding: utf-8
 # app/auth/views.py
 
 from flask import flash, redirect, render_template, url_for
@@ -15,7 +16,7 @@ def register():
     Añadiendo un usario a la base de datos atraves del registro 
     """
     form = RegistrationForm()
-    form.is_admin.render_kw = {'display': 'none'}
+    form.is_admin.render_kw = {'type': 'hidden', 'disabled':'disabled'}
     if form.validate_on_submit():
         user = User(email=form.email.data,
                             username=form.username.data,
