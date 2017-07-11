@@ -25,7 +25,7 @@ def list_genres():
 
 @api.route('/genres/show/<int:id>', methods=['GET', 'POST'])
 def get_genre(id):
-    store = False
+    add_genre = False
     returned_data = ""
     tasks = {}
     try:
@@ -45,7 +45,7 @@ def get_genre(id):
     
 @api.route('/genres/add', methods=['GET', 'POST'])
 def add_genre():
-    store = True    
+    add_genre = True    
     returned_data = ""
     received_data = request.json
     try:
@@ -60,7 +60,7 @@ def add_genre():
         
 @api.route('/genres/edit/<int:id>', methods=['GET', 'POST', 'PUT'])
 def edit_genre(id):
-    store = False
+    add_genre = False
     returned_data = ""
     received_data = request.json
     try:
@@ -93,12 +93,174 @@ def list_outfits():
     for x in outfits:
         tasks.append({
                 'id': x.id,
-                'sexo': x.sex,
-                'foto': x.photo,
-                'descripcion': x.description,
+                'sex': x.sex,
+                'photo': x.photo,
+                'description': x.description,
                 'is_public': x.is_public,
                 'genre_id': x.genre_id,
                 'user_id': x.user_id              
         })
     return jsonify(tasks)
 
+@api.route('/outfits/show/<int:id>', methods=['GET', 'POST'])
+def get_outfit(id):
+    add_outfit = False
+    returned_data = ""
+    tasks = {}
+    try:
+        outfits = Outfit.query.get_or_404(id)  
+        returned_data=[{
+                'id': outfits.id,
+                'sex': outfits.sex,
+                'photo': outfits.photo,
+                'description': outfits.description,
+                'is_public': outfits.is_public,
+                'genre_id': outfits.genre_id,
+                'user_id': outfits.user_id
+        }]        
+    except:
+        returned_data=[{'error':'error'}]
+    return jsonify(returned_data)   
+
+
+@api.route('/outfits/add', methods=['GET', 'POST'])
+def add_outfit():
+    add_outfit = True       
+    returned_data = ""
+    received_data = request.json
+    try:
+        outfit = Outfit(sex=received_data['sex'], photo=received_data['photo'], 
+                        description=received_data['description'], 
+                        is_public=received_data['is_public'],
+                        genre_id=received_data['genre_id'],
+                        user_id=received_data['user_id'])        
+        db.session.add(outfit)
+        db.session.commit()
+        returned_data="Se Creo un nuevo vestuario"
+    except:
+        returned_data="Hubo un error"
+    return returned_data
+
+@api.route('/outfits/edit/<int:id>', methods=['GET', 'POST','PUT'])
+def edit_outfit(id):
+    add_outfit = False
+
+    returned_data = ""
+    received_data = request.json
+    try:
+        outfit = Outfit.query.get_or_404(id)    
+        outfit.sex = received_data['sex']
+        outfit.photo = received_data['photo']
+        outfit.description = received_data['description']
+        outfit.is_public=received_data['is_public']
+        outfit.genre_id=received_data['genre_id']
+        outfit.user_id=received_data['user_id']
+        db.session.commit()            
+        returned_data="Se edito un dato"
+    except:
+        returned_data="Hubo un error al editar"
+    return returned_data
+
+
+
+@api.route('/outfits/delete/<int:id>', methods=['GET', 'POST','DELETE'])
+def delete_outfit(id):
+    returned_data = ""
+    try:
+        outfit = Outfit.query.get_or_404(id)
+        db.session.delete(outfit)
+        db.session.commit()
+        returned_data="Se elimino correctamente"
+    except:
+        returned_data="Hubo un error al eliminar"
+    return returned_data
+
+
+
+@api.route('/users', methods=['GET', 'POST'])
+def list_users():
+    users = User.query.all()
+    tasks = []
+    for x in users:
+        tasks.append({
+                'id': x.id,
+                'email': x.email,
+                'username': x.username,
+                'first_name': x.first_name,
+                'last_name': x.last_name,
+                'password_hash': x.password_hash,
+                'is_admin': x.is_admin              
+        })
+    return jsonify(tasks)
+
+
+@api.route('/users/show/<int:id>', methods=['GET', 'POST'])
+def get_user(id):
+    add_user = False
+    returned_data = ""
+    tasks = {}
+    try:
+        users = User.query.get_or_404(id)  
+        returned_data=[{
+                'id': users.id,
+                'email': users.email,
+                'username': users.username,
+                'first_name': users.first_name,
+                'last_name': users.last_name,
+                'password_hash': users.password_hash,
+                'is_admin': users.is_admin 
+        }]        
+    except:
+        returned_data=[{'error':'error'}]
+    return jsonify(returned_data)   
+
+
+@api.route('/users/add', methods=['GET', 'POST'])
+def add_user():
+    add_user = True       
+    returned_data = ""
+    received_data = request.json
+    try:
+        user = User(email=received_data['email'], username=received_data['username'], 
+                        first_name=received_data['first_name'], 
+                        last_name=received_data['last_name'],
+                        password_hash=received_data['password_hash'],
+                        is_admin=received_data['is_admin'])        
+        db.session.add(user)
+        db.session.commit()
+        returned_data="Se Creo un usuario vestuario"
+    except:
+        returned_data="Hubo un error"
+    return returned_data
+
+
+@api.route('/users/edit/<int:id>', methods=['GET', 'POST','PUT'])
+def edit_user(id):
+    add_user = False
+    returned_data = ""
+    received_data = request.json
+    try:
+        user = User.query.get_or_404(id)    
+        user.email = received_data['email']
+        user.username = received_data['username']
+        user.first_name = received_data['first_name']
+        user.last_name = received_data['last_name']
+        user.password_hash = received_data['password_hash']
+        user.is_admin = received_data['is_admin']
+        db.session.commit()            
+        returned_data="Se edito un dato"
+    except:
+        returned_data="Hubo un error al editar"
+    return returned_data
+
+@api.route('/users/delete/<int:id>', methods=['GET', 'POST','DELETE'])
+def delete_user(id):
+    returned_data = ""
+    try:
+        user = User.query.get_or_404(id)
+        db.session.delete(user)
+        db.session.commit()
+        returned_data="Se elimino correctamente"
+    except:
+        returned_data="Hubo un error al eliminar"
+    return returned_data 
