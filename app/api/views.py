@@ -25,7 +25,7 @@ def list_genres():
 
 @api.route('/genres/show/<int:id>', methods=['GET', 'POST'])
 def get_genre(id):
-    store = False
+    add_genre = False
     returned_data = ""
     tasks = {}
     try:
@@ -45,7 +45,7 @@ def get_genre(id):
     
 @api.route('/genres/add', methods=['GET', 'POST'])
 def add_genre():
-    store = True    
+    add_genre = True    
     returned_data = ""
     received_data = request.json
     try:
@@ -60,7 +60,7 @@ def add_genre():
         
 @api.route('/genres/edit/<int:id>', methods=['GET', 'POST', 'PUT'])
 def edit_genre(id):
-    store = False
+    add_genre = False
     returned_data = ""
     received_data = request.json
     try:
@@ -93,159 +93,174 @@ def list_outfits():
     for x in outfits:
         tasks.append({
                 'id': x.id,
-                'sexo': x.sex,
-                'foto': x.photo,
-                'descripcion': x.description,
+                'sex': x.sex,
+                'photo': x.photo,
+                'description': x.description,
                 'is_public': x.is_public,
                 'genre_id': x.genre_id,
                 'user_id': x.user_id              
         })
     return jsonify(tasks)
 
-@admin.route('/outfits/add', methods=['GET', 'POST'])
-@login_required
+@api.route('/outfits/show/<int:id>', methods=['GET', 'POST'])
+def get_outfit(id):
+    add_outfit = False
+    returned_data = ""
+    tasks = {}
+    try:
+        outfits = Outfit.query.get_or_404(id)  
+        returned_data=[{
+                'id': outfits.id,
+                'sex': outfits.sex,
+                'photo': outfits.photo,
+                'description': outfits.description,
+                'is_public': outfits.is_public,
+                'genre_id': outfits.genre_id,
+                'user_id': outfits.user_id
+        }]        
+    except:
+        returned_data=[{'error':'error'}]
+    return jsonify(returned_data)   
+
+
+@api.route('/outfits/add', methods=['GET', 'POST'])
 def add_outfit():
-    check_admin()
-    add_outfit = True
+    add_outfit = True       
+    returned_data = ""
+    received_data = request.json
+    try:
+        outfit = Outfit(sex=received_data['sex'], photo=received_data['photo'], 
+                        description=received_data['description'], 
+                        is_public=received_data['is_public'],
+                        genre_id=received_data['genre_id'],
+                        user_id=received_data['user_id'])        
+        db.session.add(outfit)
+        db.session.commit()
+        returned_data="Se Creo un nuevo vestuario"
+    except:
+        returned_data="Hubo un error"
+    return returned_data
 
-    form = Outfitform()
-    if form.validate_on_submit():
-        outfit = Outfit(sex=form.sex.data, photo=form.photo.data, 
-                        description=form.description.data, 
-                        is_public=form.is_public.data)
-        try:
-            db.session.add(outfit)
-            db.session.commit()
-            flash('You have successfully added a new outfit')
-        except Exception as e:
-            flash('Error')
-
-        return redirect(url_for('admin.list_outfits'))
-
-    return render_template('admin/outfits/outfit.html',action="Add",
-                            add_outfit=add_outfit, form=form,
-                            title="Add Outfit")
-
-
-@admin.route('outfits/edit/<int:id>', methods=['GET', 'POST'])
-@login_required
+@api.route('/outfits/edit/<int:id>', methods=['GET', 'POST','PUT'])
 def edit_outfit(id):
-    check_admin()
     add_outfit = False
 
-    outfit = Outfit.query.get_or_404(id)
-    form = Outfitform()
-    if form.validate_on_submit():
-        outfit.sex = form.sex.data
-        outfit.photo = form.photo.data
-        outfit.description = form.description.data
-        outfit.is_public=form.is_public.data
-        db.session.commit()
-        flash('You have successfully edited the outfit')
-
-        return redirect(url_for('admin.list_outfits'))
-
-    form.sex.data=outfit.sex
-    form.photo.data=outfit.photo
-    form.description.data=outfit.description
-    form.is_public.data=outfit.is_public
-    return render_template('admin/outfits/outfit.html',action="Add",
-                            add_outfit=add_outfit, form=form,
-                            title="Edit Outfit")
+    returned_data = ""
+    received_data = request.json
+    try:
+        outfit = Outfit.query.get_or_404(id)    
+        outfit.sex = received_data['sex']
+        outfit.photo = received_data['photo']
+        outfit.description = received_data['description']
+        outfit.is_public=received_data['is_public']
+        outfit.genre_id=received_data['genre_id']
+        outfit.user_id=received_data['user_id']
+        db.session.commit()            
+        returned_data="Se edito un dato"
+    except:
+        returned_data="Hubo un error al editar"
+    return returned_data
 
 
-@admin.route('outfits/delete/<int:id>', methods=['GET', 'POST'])
-@login_required
+
+@api.route('/outfits/delete/<int:id>', methods=['GET', 'POST','DELETE'])
 def delete_outfit(id):
-    check_admin()
-
-    outfit = Outfit.query.get_or_404(id)
-    db.session.delete(outfit)
-    db.session.commit()
-    flash('You have successfully deleted the outfit.')
-
-    return redirect(url_for('admin.list_outfits'))
-
-    return render_template(title="Delete Outfit")
-
-# sin probar
-# Outfit search
-
-# @admin.route('/outfit/search/<string:genre>')
-# @login_required
-# def search_outfits(genre):
-#     check_admin()
-    
-#     outfits = Outfit.query.filter_by(genre=genre).all()
-#     return render_template('admin/outfits/outfits.html', outfits=outfits, 
-#                             title='Outfits')
-
-
-#sin probar
-# User Views
-
-@admin.route('/users', methods=['GET', 'POST'])
-@login_required
-def list_users():
-    """
-    List all users
-    """
-    check_admin()
-
-    users = User.query.all()
-
-    return render_template('admin/user/users.html',
-                           users=users, title="Users")
-
-@admin.route('/users/edit/<int:id>', methods=['GET', 'POST'])
-@login_required
-def edit_user(id):
-    """
-    Editar usuario
-    """
-    check_admin()
-
-    add_user = False
-
-    user = User.query.get_or_404(id)
-    form =RegistrationForm()
-    if form.validate_on_submit():
-        user.email = form.email.data
-        user.username = form.username.data
-        user.first_name = form.first_name.data
-        user.last_name = form.last_name.data
-        user.password_hash = form.password.data
-        user.is_admin = form.is_admin.data
+    returned_data = ""
+    try:
+        outfit = Outfit.query.get_or_404(id)
+        db.session.delete(outfit)
         db.session.commit()
-        flash('Se ha editado correctamente el usuario.')
+        returned_data="Se elimino correctamente"
+    except:
+        returned_data="Hubo un error al eliminar"
+    return returned_data
 
-        # redirect to the users page
-        return redirect(url_for('admin.list_users'))
 
-    form.email.data = user.email
-    form.username.data=user.username
-    form.first_name.data = user.first_name
-    form.last_name.data = user.last_name
-    form.password.data = user.password_hash
-    form.is_admin.data = user.is_admin
-    return render_template('auth/register.html', action="Edit",
-                           add_user=add_user, form=form,
-                           user=user, title="Edit User")
 
-@admin.route('/users/delete/<int:id>', methods=['GET', 'POST'])
-@login_required
+@api.route('/users', methods=['GET', 'POST'])
+def list_users():
+    users = User.query.all()
+    tasks = []
+    for x in users:
+        tasks.append({
+                'id': x.id,
+                'email': x.email,
+                'username': x.username,
+                'first_name': x.first_name,
+                'last_name': x.last_name,
+                'password_hash': x.password_hash,
+                'is_admin': x.is_admin              
+        })
+    return jsonify(tasks)
+
+
+@api.route('/users/show/<int:id>', methods=['GET', 'POST'])
+def get_user(id):
+    add_user = False
+    returned_data = ""
+    tasks = {}
+    try:
+        users = User.query.get_or_404(id)  
+        returned_data=[{
+                'id': users.id,
+                'email': users.email,
+                'username': users.username,
+                'first_name': users.first_name,
+                'last_name': users.last_name,
+                'password_hash': users.password_hash,
+                'is_admin': users.is_admin 
+        }]        
+    except:
+        returned_data=[{'error':'error'}]
+    return jsonify(returned_data)   
+
+
+@api.route('/users/add', methods=['GET', 'POST'])
+def add_user():
+    add_user = True       
+    returned_data = ""
+    received_data = request.json
+    try:
+        user = User(email=received_data['email'], username=received_data['username'], 
+                        first_name=received_data['first_name'], 
+                        last_name=received_data['last_name'],
+                        password_hash=received_data['password_hash'],
+                        is_admin=received_data['is_admin'])        
+        db.session.add(user)
+        db.session.commit()
+        returned_data="Se Creo un usuario vestuario"
+    except:
+        returned_data="Hubo un error"
+    return returned_data
+
+
+@api.route('/users/edit/<int:id>', methods=['GET', 'POST','PUT'])
+def edit_user(id):
+    add_user = False
+    returned_data = ""
+    received_data = request.json
+    try:
+        user = User.query.get_or_404(id)    
+        user.email = received_data['email']
+        user.username = received_data['username']
+        user.first_name = received_data['first_name']
+        user.last_name = received_data['last_name']
+        user.password_hash = received_data['password_hash']
+        user.is_admin = received_data['is_admin']
+        db.session.commit()            
+        returned_data="Se edito un dato"
+    except:
+        returned_data="Hubo un error al editar"
+    return returned_data
+
+@api.route('/users/delete/<int:id>', methods=['GET', 'POST','DELETE'])
 def delete_user(id):
-    """
-    Delete a user from the database
-    """
-    check_admin()
-
-    user = User.query.get_or_404(id)
-    db.session.delete(user)
-    db.session.commit()
-    flash('You have successfully deleted the user.')
-
-    # redirect to the users page
-    return redirect(url_for('admin.list_users'))
-
-    return render_template(title="Delete User")
+    returned_data = ""
+    try:
+        user = User.query.get_or_404(id)
+        db.session.delete(user)
+        db.session.commit()
+        returned_data="Se elimino correctamente"
+    except:
+        returned_data="Hubo un error al eliminar"
+    return returned_data 
