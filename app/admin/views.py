@@ -127,9 +127,13 @@ def add_outfit():
 
     form = Outfitform()
     if form.validate_on_submit():
+        # print(form.description.data)
         outfit = Outfit(sex=form.sex.data, photo=form.photo.data, 
                         description=form.description.data, 
-                        is_public=form.is_public.data)
+                        is_public=form.is_public.data,
+                        # genre_id=form.genre.data,
+                        # user_id=form.user.data
+                        )
         try:
             db.session.add(outfit)
             db.session.commit()
