@@ -17,8 +17,8 @@ def list_genres():
     for x in genres:
         tasks.append({
                 'id': x.id,
-                'nombre': x.name,
-                'descripcion': x.description        
+                'name': x.name,
+                'description': x.description        
               
         })
     return jsonify(tasks)
@@ -32,8 +32,8 @@ def get_genre(id):
         genre = Genre.query.get_or_404(id)  
         returned_data=[{
                 'id': genre.id,
-                'nombre': genre.name,
-                'descripcion': genre.description        
+                'name': genre.name,
+                'description': genre.description        
               
         }]
         
@@ -52,9 +52,9 @@ def add_genre():
         gen = Genre(name=received_data['name'],description=received_data['description'])
         db.session.add(gen)
         db.session.commit()
-        returned_data="Se Creo una nueva data aleatoria"
+        returned_data="Se creo nuevo genero"
     except:
-        returned_data="Hubo un error"
+        returned_data="Error ingresar genero"
     return returned_data
 
         
@@ -68,9 +68,9 @@ def edit_genre(id):
         genre.name = received_data['name']
         genre.description = received_data['description']
         db.session.commit()            
-        returned_data="Se edito un dato"
+        returned_data="Se edito un genero"
     except:
-        returned_data="Hubo un error al editar"
+        returned_data="Hubo un error al editar genero"
     return returned_data
 
 @api.route('/genres/delete/<int:id>', methods=['GET', 'POST', 'DELETE'])
@@ -80,9 +80,9 @@ def delete_genre(id):
         genre = Genre.query.get_or_404(id)
         db.session.delete(genre)
         db.session.commit()
-        returned_data="Se elimino correctamente"
+        returned_data="Se elimino correctamente genero"
     except:
-        returned_data="Hubo un error al eliminar"
+        returned_data="Hubo un error al eliminar genero"
     return returned_data
         
 
@@ -136,9 +136,9 @@ def add_outfit():
                         user_id=received_data['user_id'])        
         db.session.add(outfit)
         db.session.commit()
-        returned_data="Se Creo un nuevo vestuario"
+        returned_data="Se creo un nuevo vestuario"
     except:
-        returned_data="Hubo un error"
+        returned_data="Hubo un error al crear vestuario"
     return returned_data
 
 @api.route('/outfits/edit/<int:id>', methods=['GET', 'POST','PUT'])
@@ -156,9 +156,9 @@ def edit_outfit(id):
         outfit.genre_id=received_data['genre_id']
         outfit.user_id=received_data['user_id']
         db.session.commit()            
-        returned_data="Se edito un dato"
+        returned_data="Se edito un vestuario"
     except:
-        returned_data="Hubo un error al editar"
+        returned_data="Hubo un error al editar vestuario"
     return returned_data
 
 
@@ -170,9 +170,9 @@ def delete_outfit(id):
         outfit = Outfit.query.get_or_404(id)
         db.session.delete(outfit)
         db.session.commit()
-        returned_data="Se elimino correctamente"
+        returned_data="Se elimino correctamente vestuario"
     except:
-        returned_data="Hubo un error al eliminar"
+        returned_data="Hubo un error al eliminar vestuario"
     return returned_data
 
 
@@ -224,13 +224,13 @@ def add_user():
         user = User(email=received_data['email'], username=received_data['username'], 
                         first_name=received_data['first_name'], 
                         last_name=received_data['last_name'],
-                        password_hash=received_data['password_hash'],
+                        password=received_data['password_hash'],
                         is_admin=received_data['is_admin'])        
         db.session.add(user)
         db.session.commit()
-        returned_data="Se Creo un usuario vestuario"
+        returned_data="Se creo un nuevo usuario"
     except:
-        returned_data="Hubo un error"
+        returned_data="Hubo un error al crear usuario"
     return returned_data
 
 
@@ -245,12 +245,12 @@ def edit_user(id):
         user.username = received_data['username']
         user.first_name = received_data['first_name']
         user.last_name = received_data['last_name']
-        user.password_hash = received_data['password_hash']
+        user.password = received_data['password_hash']
         user.is_admin = received_data['is_admin']
         db.session.commit()            
-        returned_data="Se edito un dato"
+        returned_data="Se edito un nuevo usuario"
     except:
-        returned_data="Hubo un error al editar"
+        returned_data="Hubo un error al editar usuario"
     return returned_data
 
 @api.route('/users/delete/<int:id>', methods=['GET', 'POST','DELETE'])
@@ -260,7 +260,7 @@ def delete_user(id):
         user = User.query.get_or_404(id)
         db.session.delete(user)
         db.session.commit()
-        returned_data="Se elimino correctamente"
+        returned_data="Se elimino correctamente usuario"
     except:
-        returned_data="Hubo un error al eliminar"
+        returned_data="Hubo un error al eliminar usuario"
     return returned_data 
