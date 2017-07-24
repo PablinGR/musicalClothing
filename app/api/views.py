@@ -264,3 +264,14 @@ def delete_user(id):
     except:
         returned_data="Hubo un error al eliminar usuario"
     return returned_data 
+
+@api.route('/users/login', methods=['GET', 'POST'])
+def login():
+    returned_data = ""
+    j = request.json
+    user = User.query.filter_by(email=j['email']).first()
+    if user is not None and user.verify_password(j['password_hash']):
+        returned_data = "validado"       
+    else:
+        returned_data = "no validado"
+    return returned_data
