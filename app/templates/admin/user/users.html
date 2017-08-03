@@ -23,8 +23,8 @@
 		  <th width="15%"> Nombre </th>
                   <th width="20%"> Apellido </th>
 		  <th width="5%"> Administrador </th>
-                  <th width="15%"> Edit </th>
-                  <th width="15%"> Delete </th>
+                  <th width="15%"> Editar </th>
+                  <th width="15%"> Borrar </th>
                 </tr>
               </thead>
               <tbody>
@@ -37,12 +37,12 @@
 		  <td> {{ user.is_admin }} </td>
                   <td>
                     <a href="{{ url_for('admin.edit_user', id=user.id) }}">
-                      <i class="fa fa-pencil"></i> Edit 
+                      <i class="fa fa-pencil"></i> Editar 
                     </a>
                   </td>
                   <td>
                     <a href="{{ url_for('admin.delete_user', id=user.id) }}">
-                      <i class="fa fa-trash"></i> Delete 
+                      <i class="fa fa-trash"></i> Borrar 
                     </a>
                   </td>
                 </tr>

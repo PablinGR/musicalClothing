@@ -18,12 +18,12 @@
             <table class="table table-striped table-bordered">
               <thead>
                 <tr>
-                  <th width="10%"> Sex </th>
-                  <th width="20%"> Photo </th>
-                  <th width="30%"> Description </th>
-                  <th width="10%"> Public </th>
-                  <th width="15%"> Edit </th>
-                  <th width="15%"> Delete </th>
+                  <th width="10%"> Sexo </th>
+                  <th width="20%"> Foto </th>
+                  <th width="30%"> Descripción </th>
+                  <th width="10%"> Publicar </th>
+                  <th width="15%"> Editar </th>
+                  <th width="15%"> Borrar </th>
                 </tr>
               </thead>
               <tbody>
@@ -35,12 +35,12 @@
                   <td> {{ outfit.is_public }} </td>
                   <td>
                     <a href="{{ url_for('admin.edit_outfit', id=outfit.id) }}">
-                      <i class="fa fa-pencil"></i> Edit 
+                      <i class="fa fa-pencil"></i> Editar 
                     </a>
                   </td>
                   <td>
                     <a href="{{ url_for('admin.delete_outfit', id=outfit.id) }}">
-                      <i class="fa fa-trash"></i> Delete 
+                      <i class="fa fa-trash"></i> Borrar 
                     </a>
                   </td>
                 </tr>
@@ -51,12 +51,12 @@
           <div style="text-align: center">
         {% else %}
           <div style="text-align: center">
-            <h3> No outfit have been added. </h3>
+            <h3> No hay vestuarios agregados. </h3>
             <hr class="intro-divider">
         {% endif %}
           <a href="{{ url_for('admin.add_outfit') }}" class="btn btn-default btn-lg">
             <i class="fa fa-plus"></i>
-            Add Outfit
+            Añadir Vestuario
           </a>
         </div>
       </div>

@@ -11,16 +11,22 @@ body, h1, h2, h3 {
 }
 
 a, .navbar-default .navbar-brand, .navbar-default .navbar-nav>li>a {
-  color: #aec251;
+  color: #FF095F;
 }
 
 a:hover, .navbar-default .navbar-brand:hover, .navbar-default .navbar-nav>li>a:hover {
-  color: #687430;
+  color: #909090;
 }
 
 footer {
     padding: 50px 0;
     background-color: #f8f8f8;
+}
+#logo
+{
+    width:50px;
+    height:50px;
+
 }
 
 p.copyright {
@@ -36,12 +42,12 @@ p.copyright {
 }
 
 .btn-default {
-    border-color: #aec251;
-    color: #aec251;
+    border-color: #FF095F;
+    color: #FF095F;
 }
 
 .btn-default:hover {
-    background-color: #aec251;
+    background-color: #909090;
 }
 
 .center {
@@ -70,7 +76,7 @@ p.copyright {
     padding-top: 50px;
     padding-bottom: 50px;
     text-align: center;
-    color: #f8f8f8;
+    color: #FF095F;
     background: url(../img/intro-bg.jpg) no-repeat center center;
     background-size: cover;
     height: 100%;
