@@ -20,6 +20,6 @@ class Outfitform(FlaskForm):
     photo = FileField('Photo', validators=[DataRequired()])
     description = StringField('Description', validators=[DataRequired()])
     is_public = BooleanField('Public', validators=[DataRequired()])
-    user = QuerySelectField(query_factory=lambda: User.query.all(), get_label="id")
-    genre = QuerySelectField(query_factory=lambda: Genre.query.all(), get_label="id")
+    user = QuerySelectField(query_factory=lambda: User.query.all(), get_label="username")
+    genre = QuerySelectField(query_factory=lambda: Genre.query.all(), get_label="name")
     submit = SubmitField('Submit')
