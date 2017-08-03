@@ -127,12 +127,12 @@ def add_outfit():
 
     form = Outfitform()
     if form.validate_on_submit():
-        # print(form.description.data)
+        print(form.user.data)
         outfit = Outfit(sex=form.sex.data, photo=form.photo.data, 
                         description=form.description.data, 
                         is_public=form.is_public.data,
-                        # genre_id=form.genre.data,
-                        # user_id=form.user.data
+                        genre_id=form.genre.data.id,
+                        user_id=form.user.data.id
                         )
         try:
             db.session.add(outfit)
@@ -202,7 +202,7 @@ def delete_outfit(id):
 #                             title='Outfits')
 
 
-#sin probar
+#
 # User Views
 
 @admin.route('/users', methods=['GET', 'POST'])
