@@ -1,5 +1,7 @@
 # app/admin/views.py
 
+import os
+
 from flask import abort, flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
 
@@ -8,6 +10,8 @@ from ..auth.forms import RegistrationForm
 from forms import Genreform, Outfitform
 from .. import db
 from ..models import Genre, User, Outfit
+
+from werkzeug import secure_filename
 
 def check_admin():
     """
@@ -125,10 +129,18 @@ def add_outfit():
     check_admin()
     add_outfit = True
 
+    APPLICATION_DIR = os.path.dirname(os.path.realpath(__file__))
+    STATIC_DIR = os.path.join(APPLICATION_DIR, 'static')
+    IMAGES_DIR = os.path.join(STATIC_DIR, 'outfits')
+
     form = Outfitform()
     if form.validate_on_submit():
         print(form.user.data)
-        outfit = Outfit(sex=form.sex.data, photo=form.photo.data, 
+        file = form.photo
+        filename = os.path.join(IMAGES_DIR,secure_filename(form.photo.data.filename))
+
+        outfit = Outfit(sex=form.sex.data, 
+                        photo=filename, 
                         description=form.description.data, 
                         is_public=form.is_public.data,
                         genre_id=form.genre.data.id,
@@ -191,20 +203,7 @@ def delete_outfit(id):
 
     return render_template(title="Delete Outfit")
 
-# sin probar
-# Outfit search
 
-# @admin.route('/outfit/search/<string:genre>')
-# @login_required
-# def search_outfits(genre):
-#     check_admin()
-    
-#     outfits = Outfit.query.filter_by(genre=genre).all()
-#     return render_template('admin/outfits/outfits.html', outfits=outfits, 
-#                             title='Outfits')
-
-
-#
 # User Views
 
 @admin.route('/users', methods=['GET', 'POST'])
@@ -232,17 +231,18 @@ def edit_user(id):
 
     user = User.query.get_or_404(id)
     form =RegistrationForm()
+    del form.email
+    del form.username
     if form.validate_on_submit():
         user.first_name = form.first_name.data
         user.last_name = form.last_name.data
-        user.password_hash = form.password.data
+        user.password = form.password.data
         user.is_admin = form.is_admin.data
         db.session.commit()
         flash('Se ha editado correctamente el usuario.')
 
         # redirect to the users page
         return redirect(url_for('admin.list_users'))
-
     form.first_name.data = user.first_name
     form.last_name.data = user.last_name
     form.password.data = user.password_hash

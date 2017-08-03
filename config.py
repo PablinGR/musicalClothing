@@ -1,11 +1,13 @@
 # config.py
 
+
 class Config(object):
     """
     Common configurations
     """
 
     # Put any configurations here that are common across all environments
+    
 
 class DevelopmentConfig(Config):
     """
@@ -21,6 +23,7 @@ class ProductionConfig(Config):
     """
 
     DEBUG = False
+
 
 app_config = {
     'development': DevelopmentConfig,

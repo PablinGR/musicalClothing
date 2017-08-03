@@ -1,7 +1,7 @@
 # app/admin/forms.py
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField, BooleanField
+from wtforms import StringField, SubmitField, SelectField, BooleanField, FileField
 from wtforms.validators import DataRequired
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from ..models import User, Genre
@@ -17,7 +17,7 @@ class Genreform(FlaskForm):
 
 class Outfitform(FlaskForm):
     sex = SelectField(u'Sex', choices=[('M', 'Male'), ('F', 'Female')])
-    photo = StringField('Photo', validators=[DataRequired()])
+    photo = FileField('Photo', validators=[DataRequired()])
     description = StringField('Description', validators=[DataRequired()])
     is_public = BooleanField('Public', validators=[DataRequired()])
     user = QuerySelectField(query_factory=lambda: User.query.all(), get_label="id")
